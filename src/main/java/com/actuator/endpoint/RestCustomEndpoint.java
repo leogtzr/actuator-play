@@ -7,15 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Component
 @RestControllerEndpoint(id = "my-this-shit")
 public class RestCustomEndpoint {
 
+    // curl http://localhost:8081/actuator/my-this-shit/custom
+    // curl http://localhost:8081/actuator/my-this-shit/custom | jq .
+    // http :8081/actuator/my-this-shit/custo
     @GetMapping("/custom")
     public ResponseEntity customEndpoint() {
-        //return new ResponseEntity<>("REST endpoint", HttpStatus.OK);
         return ResponseEntity.ok(new StrWrapper("what is up"));
     }
 
