@@ -13,14 +13,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Log4j2
-@RestControllerEndpoint(id = "my-this-shit")
+@RestControllerEndpoint(id = "my-custom-endpoint")
 public class RestCustomEndpoint {
 
     private Map<String, Integer> names = new ConcurrentHashMap<>();
 
-    // curl http://localhost:8081/actuator/my-this-shit/custom
-    // curl http://localhost:8081/actuator/my-this-shit/custom | jq .
-    // http :8081/actuator/my-this-shit/custo
+    // curl http://localhost:8081/actuator/my-custom-endpoint/custom
+    // curl http://localhost:8081/actuator/my-custom-endpoint/custom | jq .
+    // http :8081/actuator/my-custom-endpoint/custom
     @GetMapping("/custom")
     public ResponseEntity customEndpoint() {
         return ResponseEntity.ok(new StrWrapper("what is up"));
@@ -31,9 +31,11 @@ public class RestCustomEndpoint {
         return ResponseEntity.ok(names);
     }
 
+    // http -f POST :8081/actuator/my-custom-endpoint/hmm name=olappp other=zzzZzzz
     @PostMapping("/hmm")
-    public void update(@Selector String name) {
+    public void update(@Selector String name, @Selector String other) {
         log.info(String.format("Receiving: %s", name));
+        log.info(String.format("Receiving: %s", other));
         names.put(name , names.computeIfAbsent(name, s -> 0) + 1);
     }
 
