@@ -5,15 +5,14 @@ import org.springframework.boot.actuate.endpoint.annotation.Selector;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Log4j2
-@RestControllerEndpoint(id = "my-custom-endpoint")
+@RestControllerEndpoint(id = "my-custom-endpoint", enableByDefault = true)
 public class RestCustomEndpoint {
 
     private Map<String, Integer> names = new ConcurrentHashMap<>();
@@ -37,6 +36,17 @@ public class RestCustomEndpoint {
         log.info(String.format("Receiving: %s", name));
         log.info(String.format("Receiving: %s", other));
         names.put(name , names.computeIfAbsent(name, s -> 0) + 1);
+    }
+
+    @GetMapping("/hola/{name}")
+    public void update(@PathVariable String name) {
+        log.info(String.format("Receiving: %s", name));
+        names.put(name , names.computeIfAbsent(name, s -> 0) + 1);
+    }
+
+    @PostMapping("/aver")
+    public void testAver(@RequestBody String email) {
+        log.info(String.format("Receiving: %s", email));
     }
 
     private static final class StrWrapper {
