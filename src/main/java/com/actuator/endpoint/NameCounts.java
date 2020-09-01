@@ -27,7 +27,7 @@ public class NameCounts {
     }
 
     @PostMapping
-    public void update(@Selector String name) {
+    public void increase(@Selector String name) {
         counts.put(name , counts.computeIfAbsent(name, s -> 0) + 1);
     }
 
